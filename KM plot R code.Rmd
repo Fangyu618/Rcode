@@ -1,0 +1,155 @@
+---
+title: "KM plot R code"
+output: html_document
+date: "2024-10-24"
+---
+```{r Load libraries}
+library(ggplot2)
+library(readxl)
+```
+
+```{r Load dataframes_1}
+mortality=read_excel("E:\\KMdata.xlsx",col_names = T,sheet="mortality")
+```
+
+```{r setup_1, include=TRUE}
+colnames(mortality)=c("Time","Survival_Probability","Lower","Upper","Cohort","cencor","event","Time_years")
+mortality=mortality[,c("Time_years","Survival_Probability","Lower","Upper","Cohort")]
+mortality$Cohort=factor(mortality$Cohort,
+                        levels=c("cohort1","cohort2"),
+                        labels=c("DM+SGLT2 ","DM-SGLT2"))
+mortality=na.omit(mortality)
+```
+
+```{r mortality_KMplot, fig.width=8, fig.height=4.5}
+mortality_KMplot=
+  ggplot(data=mortality) +
+  geom_line(aes(x=Time_years, y=Survival_Probability,group=Cohort,color=Cohort),
+            linewidth =1) +
+  geom_ribbon(aes(x=Time_years,ymin=Lower,ymax=Upper,group=Cohort,
+                  fill=Cohort),alpha=0.4) +
+  scale_y_continuous(name = "Survival probabilitiy", 
+                     expand = c(0, 0.01), limits = c(0.8, 1),
+                     breaks = seq (0.8, 1, by = 0.05)) +
+  xlim(c(0.24,5))+
+  xlab("Years")+
+  ggtitle("Mortality")+
+  scale_fill_manual("",values=c("dodgerblue", "brown1")) +
+  scale_color_manual("",values=c("dodgerblue4", "brown4")) +
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5),
+        title=element_text(size=13, face='bold'),
+        panel.border = element_blank(), 
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(), 
+        panel.grid.major.y = element_line(linewidth=0.5, color="darkgrey" ),
+        axis.line = element_line(colour = "black"),
+        axis.text.x = element_text(face="plain", color="black", size=10),
+        axis.text.y = element_text(face="plain", color="black", size=10),
+        axis.title.x = element_text(face="bold", color="black", size=12),
+        axis.title.y = element_text(face="bold",color="black", size=12, margin=margin(r=10)),
+        legend.key.size = unit(0.5, 'cm'),
+        legend.title = element_text(size=12),
+        legend.text = element_text(size=10))
+
+mortality_KMplot
+```
+
+```{r Load dataframes_2}
+MACE=read_excel("E:\\KMdata.xlsx",col_names = T,sheet="MACE")
+```
+
+```{r setup_2, include=TRUE}
+colnames(MACE)=c("Time","Survival_Probability","Lower","Upper","Cohort","cencor","event","Time_years")
+MACE=MACE[,c("Time_years","Survival_Probability","Lower","Upper","Cohort")]
+MACE$Cohort=factor(MACE$Cohort,
+                   levels=c("cohort1","cohort2"),
+                   labels=c("DM+SGLT2 ","DM-SGLT2"))
+MACE=na.omit(MACE)
+```
+
+
+```{r MACE_KMplot, fig.width=8, fig.height=4.5}
+MACE_KMplot=
+  ggplot(data=MACE) +
+  geom_line(aes(x=Time_years, y=Survival_Probability,group=Cohort,color=Cohort),
+            linewidth =1) +
+  geom_ribbon(aes(x=Time_years,ymin=Lower,ymax=Upper,group=Cohort,
+                  fill=Cohort),alpha=0.4) +
+  scale_y_continuous(name = "Survival probabilitiy", 
+                     expand = c(0, 0.01), limits = c(0.7, 1),
+                     breaks = seq (0.7, 1, by = 0.05)) +
+  xlim(c(0.24,5))+
+  xlab("Years")+
+  ggtitle("MACE")+
+  scale_fill_manual("",values=c("dodgerblue", "brown1")) +
+  scale_color_manual("",values=c("dodgerblue4", "brown4")) +
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5),
+        title=element_text(size=13, face='bold'),
+        panel.border = element_blank(), 
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(), 
+        panel.grid.major.y = element_line(linewidth=0.5, color="darkgrey" ),
+        axis.line = element_line(colour = "black"),
+        axis.text.x = element_text(face="plain", color="black", size=10),
+        axis.text.y = element_text(face="plain", color="black", size=10),
+        axis.title.x = element_text(face="bold", color="black", size=12),
+        axis.title.y = element_text(face="bold",color="black", size=12, margin=margin(r=10)),
+        legend.key.size = unit(0.5, 'cm'),
+        legend.title = element_text(size=12),
+        legend.text = element_text(size=10))
+
+MACE_KMplot
+```
+
+
+```{r Load dataframes_3}
+MAKE=read_excel("E:\\KMdata.xlsx",col_names = T,sheet="MAKE")
+```
+
+```{r setup_3, include=TRUE}
+colnames(MAKE)=c("Time","Survival_Probability","Lower","Upper","Cohort","cencor","event","Time_years")
+MAKE=MAKE[,c("Time_years","Survival_Probability","Lower","Upper","Cohort")]
+MAKE$Cohort=factor(MAKE$Cohort,
+                   levels=c("cohort1","cohort2"),
+                   labels=c("DM+SGLT2 ","DM-SGLT2"))
+MAKE=na.omit(MAKE)
+```
+
+
+```{r MAKE_KMplot, fig.width=8, fig.height=4.5}
+MAKE_KMplot=
+  ggplot(data=MAKE) +
+  geom_line(aes(x=Time_years, y=Survival_Probability,group=Cohort,color=Cohort),
+            linewidth =1) +
+  geom_ribbon(aes(x=Time_years,ymin=Lower,ymax=Upper,group=Cohort,
+                  fill=Cohort),alpha=0.4) +
+  scale_y_continuous(name = "Survival probabilitiy", 
+                     expand = c(0, 0.01), limits = c(0.6, 1),
+                     breaks = seq (0.6, 1, by = 0.1)) +
+  xlim(c(0.24,5))+
+  xlab("Years")+
+  ggtitle("MAKE")+
+  scale_fill_manual("",values=c("dodgerblue", "brown1")) +
+  scale_color_manual("",values=c("dodgerblue4", "brown4")) +
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5),
+        title=element_text(size=13, face='bold'),
+        panel.border = element_blank(), 
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(), 
+        panel.grid.major.y = element_line(linewidth=0.5, color="darkgrey" ),
+        axis.line = element_line(colour = "black"),
+        axis.text.x = element_text(face="plain", color="black", size=10),
+        axis.text.y = element_text(face="plain", color="black", size=10),
+        axis.title.x = element_text(face="bold", color="black", size=12),
+        axis.title.y = element_text(face="bold",color="black", size=12, margin=margin(r=10)),
+        legend.key.size = unit(0.5, 'cm'),
+        legend.title = element_text(size=12),
+        legend.text = element_text(size=10))
+
+MAKE_KMplot
+```
+
+
