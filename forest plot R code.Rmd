@@ -1,0 +1,200 @@
+---
+title: "forest plot R code"
+output:
+  html_document: default
+  pdf_document: default
+date: "2024-10-23"
+---
+
+```{r Load libraries}
+library(forestplot)
+library(readxl)
+```
+
+```{r Load dataframes_1}
+hazard = read_excel("E:\\forest data.xlsx" ,sheet="Hazard Ratio", col_names = FALSE )
+```
+
+```{r setup_1, include=TRUE}
+colnames(hazard)=c("V1","V2","V3","V4","V5")
+
+cochrane_from_rmeta <- 
+  structure(list(
+    mean  = hazard$V3, 
+    lower = hazard$V4,
+    upper = hazard$V5),
+    .Names = c("mean", "lower", "upper"), 
+    row.names = c(NA, -32L), 
+    class = "data.frame")
+
+tabletext <- cbind( hazard$V1, hazard$V2)
+```
+
+```{r hazard_plot, fig.width=8, fig.height=8.5}
+hazard_plot=
+  forestplot(tabletext, 
+           graph.pos = 2,
+           txt_gp=fpTxtGp(label=gpar(cex=1), ticks=gpar(cex=1),
+                          xlab=gpar(cex =0.7),title=gpar(cex =1)),
+           cochrane_from_rmeta,new_page = TRUE,
+           is.summary = c(T,T,F,T,F,F,T,F,F,F,F,F,F,F,T,F,F,T,F,F,F,F,F,F,T,F,F,F,T,F,F,F),
+           lineheight = unit ( 8,'mm'),
+           boxsize = .3, 
+           lwd.zero = 2 ,
+           lwd.xaxis = 2 ,
+           lwd.ci = 2 ,
+           zero=1,
+           ref_line=2,
+           clip = c(0.05,2.5), 
+           xlog = TRUE,
+           col = fpColors(box = "darkblue",
+                          line = "darkblue", 
+                          summary = "darkblue", 
+                          hrz_lines = "cyan4",
+                          zero="gray45")) 
+hazard_plot
+```
+
+```{r Load dataframes_2}
+mortality <- read_excel("E:\\forest data.xlsx" ,sheet="Mortality", col_names = FALSE )
+```
+
+```{r setup_2, include=TRUE}
+colnames(mortality)=c("V1","V2","V3","V4","V5")
+mortality$V1[mortality$V1=="HbA1c"]="HbA1c (%)"
+mortality$V1[mortality$V1=="Hemoglobin"]="Hemoglobin (g/dL)"
+mortality$V1[mortality$V1=="BMI"]="BMI (kg/m\u00B2)"
+mortality$V1[mortality$V1=="Baseline eGFR"]="Baseline eGFR (mL/min/1.73m\u00B2)"
+
+cochrane_from_rmeta <- 
+  structure(list(
+    mean  = mortality$V3, 
+    lower = mortality$V4,
+    upper = mortality$V5),
+    .Names = c("mean", "lower", "upper"), 
+    row.names = c(NA, -68L), 
+    class = "data.frame")
+
+tabletext <- cbind( mortality$V1, mortality$V2)
+```
+
+```{r mortality_plot, fig.width=8, fig.height=13}
+mortality_plot=
+  forestplot(tabletext, 
+           graph.pos = 2,
+           txt_gp=fpTxtGp(label=gpar(cex=1), ticks=gpar(cex=1),
+                          xlab=gpar(cex =0.7),title=gpar(cex =1)),
+           cochrane_from_rmeta,new_page = TRUE,
+           is.summary = c(T,T,T,T,T,F,F,T,F,F,T,F,F,T,F,F,T,F,F,T,F,F,T,F,F,T,F,F,T,F,F,T,F,F,T,F,F,
+                          T,F,F,T,F,F,T,F,F,T,F,F,T,F,F,T,F,F,T,F,F,T,F,F,T,F,F,T,F,F,F),
+           lineheight = unit ( 8,'mm'),
+           boxsize = .4, 
+           lwd.zero = 2 ,
+           lwd.xaxis = 2 ,
+           lwd.ci = 2,
+           zero=1,
+           clip = c(0.1,2.5), 
+           xlog = TRUE,
+           col = fpColors(box = "darkblue",
+                          line = "darkblue", 
+                          summary = "darkblue", 
+                          hrz_lines = "cyan4",
+                          zero="gray45"))
+mortality_plot
+```
+
+```{r Load dataframes_3}
+MACE <- read_excel("E:\\forest data.xlsx" ,sheet="MACE", col_names = FALSE )
+```
+
+```{r setup_3, include=TRUE}
+colnames(MACE)=c("V1","V2","V3","V4","V5")
+MACE$V1[MACE$V1=="HbA1c"]="HbA1c (%)"
+MACE$V1[MACE$V1=="Hemoglobin"]="Hemoglobin (g/dL)"
+MACE$V1[MACE$V1=="BMI"]="BMI (kg/m\u00B2)"
+MACE$V1[MACE$V1=="Baseline eGFR"]="Baseline eGFR (mL/min/1.73m\u00B2)"
+
+cochrane_from_rmeta <- 
+  structure(list(
+    mean  = MACE$V3, 
+    lower = MACE$V4,
+    upper = MACE$V5),
+    .Names = c("mean", "lower", "upper"), 
+    row.names = c(NA, -68L), 
+    class = "data.frame")
+
+tabletext <- cbind( MACE$V1, MACE$V2)
+```
+
+```{r MACE_plot, fig.width=8, fig.height=13}
+MACE_plot=
+  forestplot(tabletext, 
+           graph.pos = 2,
+           txt_gp=fpTxtGp(label=gpar(cex=1), ticks=gpar(cex=1),
+                          xlab=gpar(cex =0.7),title=gpar(cex =1)),
+           cochrane_from_rmeta,new_page = TRUE,
+           is.summary = c(T,T,T,T,T,F,F,T,F,F,T,F,F,T,F,F,T,F,F,T,F,F,T,F,F,T,F,F,T,F,F,T,F,F,T,F,F,
+                          T,F,F,T,F,F,T,F,F,T,F,F,T,F,F,T,F,F,T,F,F,T,F,F,T,F,F,T,F,F,F),
+           lineheight = unit ( 8,'mm'),
+           boxsize = .4, 
+           lwd.zero = 2 ,
+           lwd.xaxis = 2 ,
+           lwd.ci = 2,
+           zero=1,
+           clip = c(0.1,2.5), 
+           xlog = TRUE,
+           col = fpColors(box = "darkblue",
+                          line = "darkblue", 
+                          summary = "darkblue", 
+                          hrz_lines = "cyan4",
+                          zero="gray45"))
+MACE_plot
+```
+
+```{r Load dataframes_4}
+MAKE <- read_excel("E:\\forest data.xlsx" ,sheet="MAKE", col_names = FALSE )
+```
+
+```{r setup_4, include=TRUE}
+colnames(MAKE)=c("V1","V2","V3","V4","V5")
+MAKE$V1[MAKE$V1=="HbA1c"]="HbA1c (%)"
+MAKE$V1[MAKE$V1=="Hemoglobin"]="Hemoglobin (g/dL)"
+MAKE$V1[MAKE$V1=="BMI"]="BMI (kg/m\u00B2)"
+MAKE$V1[MAKE$V1=="Baseline eGFR"]="Baseline eGFR (mL/min/1.73m\u00B2)"
+
+cochrane_from_rmeta <- 
+  structure(list(
+    mean  = MAKE$V3, 
+    lower = MAKE$V4,
+    upper = MAKE$V5),
+    .Names = c("mean", "lower", "upper"), 
+    row.names = c(NA, -68L), 
+    class = "data.frame")
+
+tabletext <- cbind( MAKE$V1, MAKE$V2)
+```
+
+```{r MAKE_plot, fig.width=8, fig.height=13}
+MAKE_plot=
+  forestplot(tabletext, 
+           graph.pos = 2,
+           txt_gp=fpTxtGp(label=gpar(cex=1), ticks=gpar(cex=1),
+                          xlab=gpar(cex =0.7),title=gpar(cex =1)),
+           cochrane_from_rmeta,new_page = TRUE,
+           is.summary = c(T,T,T,T,T,F,F,T,F,F,T,F,F,T,F,F,T,F,F,T,F,F,T,F,F,T,F,F,T,F,F,T,F,F,T,F,F,
+                          T,F,F,T,F,F,T,F,F,T,F,F,T,F,F,T,F,F,T,F,F,T,F,F,T,F,F,T,F,F,F),
+           lineheight = unit ( 8,'mm'),
+           boxsize = .4, 
+           lwd.zero = 2 ,
+           lwd.xaxis = 2 ,
+           lwd.ci = 2,
+           zero=1,
+           clip = c(0.1,2.5), 
+           xlog = TRUE,
+           col = fpColors(box = "darkblue",
+                          line = "darkblue", 
+                          summary = "darkblue", 
+                          hrz_lines = "cyan4",
+                          zero="gray45"))
+MAKE_plot
+```
